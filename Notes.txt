@@ -1,0 +1,108 @@
+Architecture:
+    Browser: provides runtime env to run js
+    Node is a runtime env for js code similar to the runtime env provided by the browser(a v8 js engine).
+    we can work with file system (FS) or the network etc...
+
+Node is not a programming language. Its not a framework. Its just a runtime environment to execute js code.
+
+Node applications are highly scable due to it's non-blocking and asynchronous nature(by default).
+
+Single thread: allocated to handle requests. The thread doesnot wait for the response and in the mean time will serve another request.
+Node doesnot wait for I/O operations i.e. network calls, database operations, and file operations. Instead of blocking the operations, node used call backs anx events.
+Thread: set of instructions that are executed.
+When the response is ready node puts the response in an "event queue". Node continuously monitors this queue. 
+Upon finding a response, it gets pickedup by the event loop and gets processed. 
+Node is not suitabel for cpu intensive apps like image manipulation and video processing (as these would require blocking processes).
+
+
+Node Modules: OS, FS, Events, HTTP
+
+    Global objects: Objects that are globally available.
+    ex: console.log
+    setTimout() - call a afunction after a delay
+    clearTimeout()
+    setInterval() - used to repeatedly call a function after a delay
+    clearInterval()
+
+    All the variables and functions defined globally can be accessed by the object "global"
+    ex: 
+    global.setTimeout(), etc...
+
+    A new variable defined as 
+    var message = " ";
+    global.message returns undefined as the scope of the variable is restricted to the file it is declared in and are not availabel globally. 
+    This is due to the modular system.
+    If there are two files and both of these have a function with same name and are difined globally, one of the functions get overwritten.
+
+Module: every file in a node application is considered a module.
+    To use the function defined in a module, we need to export the function.
+    ex: module.export.<function_name> = <function_name>;
+
+when importiung an object of a module, the best practice is to store it in a const so as to prevent overwriting it.
+We can export the whole object or a single function from inside a module.
+Node doesnot execute the code inside a module directly. It wraps it inside a default function and executes it.
+    ex: (function(exports, require, module, __filename, __dirname) {
+        var a = '';
+        function ... {
+
+        }
+    })
+
+    the arguments: 
+    require: it is an argument passed to the module wrapper function and the scope of this require is limited to theat module.
+    exports: this is used to specify the function that needs to be exported.
+    __filename: complete path to the module file.
+    __dirname: compleyte pathe to the directory where the module file exists.
+
+Path module: a module built into the core of Node.
+    Useful modules: file system, Http, OS, Path, Process, QueryString, stream(allows us to process streams of data).
+    this module has bunch of useful methods
+    ex: path.parse(__filename) -> this contains root, dir : directory containing file, name: of the file,  ext: extention.
+
+Filesystem: This mopdule has a comprehensive set of methods to work with files and directories
+    Almost every methos in this method is synchronous and blocking or asynchronous and non-blocking.
+    Since node works on a single thread, async methods are used always for better performance.
+    ex: const fs = require('fs')
+    fs.readdirSyns('./) : returns the list of all files names present in the directory.
+    
+    fs.readdir('./, function(err, files) {  -> this is the async version of the function in the previous line.
+        if (err) console.log('error'+err);
+        else console.log('Result', files);
+    })
+
+Events: an event is a signal that indicates that something has happened in the application.
+    for example: http listening on a port, whenever a request is received, raises a event. The job is to respond to the event by reading teh request and responding to it.
+
+    EventEmitter: It is one of the core building blocks of node.
+    event emitter is a class and hence we need to create an instance of this class to use the functions and properties.
+    ex: 
+        const eventEmitter = require('events');
+        const event = new EventEmitter();
+
+        event.on(<event_name>, fucntion(arg){  -> same as event.addListener() we can also write the callback function as () => {}
+            console.log('Listener called', arg);
+        })  
+        event.emit(<event_name>, {id: 1, url: 'http://'});  -> used to raise/signal an event. here we can also add additional avent argumrnts. 
+        it is a better practice to encapsulate these arguments inside an object.
+
+In real world we wouldnot work directly with the events module. We would want to create a class and use that class in the code.
+
+HTTP: It is used for creating backend services for client/web applications.
+    
+    const server = http.createServer() -> used to create a webserver. This is an event emitter and hence has .on(), .emit(), .addListener() methods.
+    server.listen(3000); -> when the application is run, the server starts listening on the port 3000.
+        server.on(<event_name>, callbackFunction)
+    server.on('connection', (socket) => {  -> here the argument socket is of type Socket class.
+        console.log('new connection');
+    });
+
+    In common the callback functionn is passed to the http.createServer itselt i.e.
+    const server = http.createServer((req, res) => {
+        if (req.url === '/') {
+            res.write('hello world);
+            res.end();
+        }
+    })
+
+Process: it is an object that corresponds to the current process that is being run currently.
+
