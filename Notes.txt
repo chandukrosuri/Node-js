@@ -106,3 +106,13 @@ HTTP: It is used for creating backend services for client/web applications.
 
 Process: it is an object that corresponds to the current process that is being run currently.
 
+In package.json, we can add our own keywords to start and keep the server running by introducing a keyword "Start".
+here the key can be any string such as dev, qa etc... and the starting command changes to npm run <key>
+To install a dependency as a dev dependency, add a flag -D. Ex: npm install -D nodemon
+Package-lock.json: It is a file that gets created when we install ndoemon. It has entire dependency tree with all corresponding versions.
+When committing the code to github we donot need node_modules folder beacuse it can be easily reproduced.
+This can be done by using the dependencies snippet in package.json file.
+To make this possible, we can create a new file called .gitignore and add the filename/foldername we want to exclude.
+
+.ENV file: This file contains environment variables which can be accessed throughout the project. 
+In node js there is a "process" object, the .ENV object is above the process object.

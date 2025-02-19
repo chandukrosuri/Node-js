@@ -4,7 +4,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "npm test"
+    "test": "node test",
+    "start": "nodemon --env-file=.env app.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
     "url": "https://github.com/chandukrosuri/Node-js/issues"
   },
   "homepage": "https://github.com/chandukrosuri/Node-js#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
 }
