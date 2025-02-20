@@ -10,12 +10,12 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, {'content-Type': 'text/html'});
                 res.end('<h1>About page</h1>');
             } else {
-                res.writeHead(404, {'content-Type': 'text/JSON'});
-                res.end('{message: invalid page}');
+                throw new Error('not found');
             }
         }
     } catch (error) {
-        
+        res.writeHead(404, {'content-Type': 'text/json'});
+        res.end('{message: error}');
     }
 });
 

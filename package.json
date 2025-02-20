@@ -1,11 +1,11 @@
 {
   "name": "node",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "controller.js",
   "type": "module",
   "scripts": {
     "test": "node test",
-    "start": "nodemon --env-file=.env app.js"
+    "start": "nodemon --env-file=.env controller.js"
   },
   "repository": {
     "type": "git",
